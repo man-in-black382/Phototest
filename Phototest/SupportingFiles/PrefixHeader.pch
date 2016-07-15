@@ -1,0 +1,14 @@
+//
+//  PrefixHeader.pch
+//  Phototest
+//
+//  Created by Pavlo on 7/13/16.
+//  Copyright © 2016 Pavlo Muratov. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import <UIKit/UIKit.h>
+
+#endif /* PrefixHeader_pch */
