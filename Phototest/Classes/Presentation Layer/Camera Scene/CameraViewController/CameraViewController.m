@@ -27,7 +27,6 @@
 @property (weak, nonatomic) IBOutlet UIView *cameraPreviewView;
 @property (weak, nonatomic) IBOutlet UIView *deniedVideoPermisisonsView;
 @property (weak, nonatomic) IBOutlet UIView *faceViewsContainer;
-@property (weak, nonatomic) IBOutlet UIImageView *capturedImagePreviewImageView;
 @property (weak, nonatomic) IBOutlet UploadStatusView *uploadStatusView;
 @property (weak, nonatomic) IBOutlet UserInteractionMenu *userInteractionMenu;
 
@@ -110,7 +109,6 @@
 
 - (IBAction)sendImagePressed:(id)sender
 {
-    self.capturedImagePreviewImageView.image = nil;
     [self.userInteractionMenu hideDialog];
     [self.uploadStatusView uploadStarted];
     self.capturePipeline.paused = NO;
@@ -133,7 +131,6 @@
 - (IBAction)discardImagePressed:(id)sender
 {
     self.capturePipeline.paused = NO;
-    self.capturedImagePreviewImageView.image = nil;
     [self.userInteractionMenu hideDialog];
 }
 
@@ -163,7 +160,6 @@
 - (void)capturePipeline:(AVCapturePipeline *)pipeline capturedStillImage:(UIImage *)image
 {
     self.capturedImage = [image webSuitedImage];
-    self.capturedImagePreviewImageView.image = image;
     [self.userInteractionMenu showDialog];
 }
 

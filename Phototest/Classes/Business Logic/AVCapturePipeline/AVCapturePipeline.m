@@ -39,6 +39,8 @@ static CGFloat const MaxZoomFactor = 8.f;
 
 @implementation AVCapturePipeline
 
+@synthesize paused = _paused;
+
 #pragma mark - Lifecycle
 
 - (instancetype)init
@@ -112,8 +114,23 @@ static CGFloat const MaxZoomFactor = 8.f;
 {
     _videoOrientation = videoOrientation;
     
-    AVCaptureConnection *stillImageConnection = [self.videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
-    stillImageConnection.videoOrientation = videoOrientation;
+    AVCaptureConnection *videoConnection = [self.videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+    videoConnection.videoOrientation = videoOrientation;
+}
+
+- (void)setPaused:(BOOL)paused
+{
+    @synchronized (self) {
+        _paused = paused;
+        self.videoCapturePreviewLayer.connection.enabled = !paused;
+    }
+}
+
+- (BOOL)isPaused
+{
+    @synchronized (self) {
+        return _paused;
+    }
 }
 
 - (BOOL)isFlashAvailable
@@ -225,6 +242,24 @@ static CGFloat const MaxZoomFactor = 8.f;
     return nil;
 }
 
+- (AVCaptureVideoOrientation)videoOrientationFromDeviceOrientation:(UIDeviceOrientation)deviceOrientation
+{
+    switch (deviceOrientation) {
+        case UIDeviceOrientationPortrait: {
+            return AVCaptureVideoOrientationPortrait;
+        }
+        case UIDeviceOrientationLandscapeRight: {
+            return AVCaptureVideoOrientationLandscapeLeft;
+        }
+        case UIDeviceOrientationPortraitUpsideDown: {
+            return AVCaptureVideoOrientationPortraitUpsideDown;
+        }
+        default: {
+            return AVCaptureVideoOrientationLandscapeRight;
+        }
+    }
+}
+
 #pragma mark - Device interaction
 
 - (void)focusAndExposeAtDevicePoint:(CGPoint)point
@@ -261,9 +296,8 @@ static CGFloat const MaxZoomFactor = 8.f;
 - (void)captureStillImage
 {
     AVCaptureConnection *connection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
-  
-    // Pause preview layer
-    self.videoCapturePreviewLayer.connection.enabled = NO;
+    connection.videoOrientation = [self videoOrientationFromDeviceOrientation:[UIDevice currentDevice].orientation];
+    
     __weak typeof(self) weakSelf = self;
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:connection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
@@ -274,8 +308,6 @@ static CGFloat const MaxZoomFactor = 8.f;
                 [weakSelf.delegate capturePipeline:weakSelf capturedStillImage:image];
             }
         });
-        
-        weakSelf.videoCapturePreviewLayer.connection.enabled = YES;
     }];
 }
 

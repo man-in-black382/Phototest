@@ -199,9 +199,6 @@
                                     <outlet property="verticalConstraint" destination="19L-W0-ULr" id="m84-71-tod"/>
                                 </connections>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mcq-6r-dFg" userLabel="CapturedImagePreview - UIImageView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            </imageView>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gkn-gm-OC7" userLabel="UserInteractionMenu" customClass="UserInteractionMenu">
                                 <rect key="frame" x="200" y="350" width="200" height="250"/>
                                 <subviews>
@@ -339,12 +336,8 @@
                             <constraint firstItem="Gm3-3c-NBO" firstAttribute="top" secondItem="Eub-7H-ckW" secondAttribute="top" id="1Hm-ut-f6X"/>
                             <constraint firstItem="pAg-i4-CuP" firstAttribute="top" secondItem="Eub-7H-ckW" secondAttribute="top" id="2YY-I2-M1z"/>
                             <constraint firstAttribute="trailing" secondItem="pAg-i4-CuP" secondAttribute="trailing" id="2e8-eS-NWs"/>
-                            <constraint firstItem="Mcq-6r-dFg" firstAttribute="top" secondItem="Eub-7H-ckW" secondAttribute="top" id="IHX-bT-3cz"/>
                             <constraint firstItem="gkn-gm-OC7" firstAttribute="centerX" secondItem="Eub-7H-ckW" secondAttribute="centerX" id="S1e-tf-hNd"/>
-                            <constraint firstItem="cRg-Zg-TmV" firstAttribute="top" secondItem="Mcq-6r-dFg" secondAttribute="bottom" id="Ujf-4U-b3W"/>
-                            <constraint firstAttribute="trailing" secondItem="Mcq-6r-dFg" secondAttribute="trailing" id="VWg-pA-TYD"/>
                             <constraint firstItem="pAg-i4-CuP" firstAttribute="leading" secondItem="Eub-7H-ckW" secondAttribute="leading" id="Yaz-z9-xIT"/>
-                            <constraint firstItem="Mcq-6r-dFg" firstAttribute="leading" secondItem="Eub-7H-ckW" secondAttribute="leading" id="cjU-ss-2sF"/>
                             <constraint firstItem="cRg-Zg-TmV" firstAttribute="top" secondItem="Gm3-3c-NBO" secondAttribute="bottom" id="e2W-qH-qQp"/>
                             <constraint firstItem="Fts-hS-ghc" firstAttribute="centerX" secondItem="Eub-7H-ckW" secondAttribute="centerX" id="fDE-Zv-Jqs"/>
                             <constraint firstItem="Yey-vD-SiU" firstAttribute="leading" secondItem="Eub-7H-ckW" secondAttribute="leading" constant="30" id="gHJ-ow-noH"/>
@@ -369,7 +362,6 @@
                     </view>
                     <connections>
                         <outlet property="cameraPreviewView" destination="Gm3-3c-NBO" id="27P-jU-0aq"/>
-                        <outlet property="capturedImagePreviewImageView" destination="Mcq-6r-dFg" id="Esp-Gh-uH6"/>
                         <outlet property="deniedVideoPermisisonsView" destination="Yey-vD-SiU" id="jeZ-kU-nqJ"/>
                         <outlet property="faceViewsContainer" destination="pAg-i4-CuP" id="2fL-sx-NOA"/>
                         <outlet property="uploadStatusView" destination="Fts-hS-ghc" id="xhE-yQ-HX7"/>

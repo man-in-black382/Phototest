@@ -13,20 +13,12 @@
 - (UIImage *)scaledImageWithScaleFactor:(CGFloat)scaleFactor
 {
     CGSize newSize = CGSizeMake(self.size.width * scaleFactor, self.size.height * scaleFactor);
-    CGContextRef bitmap = CGBitmapContextCreate(nil,
-                                                newSize.height,
-                                                newSize.width,
-                                                CGImageGetBitsPerComponent(self.CGImage),
-                                                4 * newSize.height, CGImageGetColorSpace(self.CGImage),
-                                                (CGBitmapInfo)kCGImageAlphaNoneSkipLast);
+    UIGraphicsBeginImageContextWithOptions(newSize, YES, self.scale);
+    [self drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *scaledAndNormalizedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
     
-    CGContextDrawImage(bitmap, CGRectMake(0, 0, newSize.height, newSize.width), self.CGImage);
-    
-    CGImageRef ref = CGBitmapContextCreateImage(bitmap);
-    UIImage *newImage = [UIImage imageWithCGImage:ref];
-    CGContextRelease(bitmap);
-    
-    return newImage;
+    return scaledAndNormalizedImage;
 }
 
 - (UIImage *)webSuitedImage
