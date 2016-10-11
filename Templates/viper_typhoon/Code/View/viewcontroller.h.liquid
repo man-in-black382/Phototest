@@ -1,0 +1,11 @@
+{% include 'header' %}
+
+#import "{{ prefix }}{{ module_info.name }}ViewInput.h"
+
+@protocol {{ prefix }}{{ module_info.name }}ViewOutput;
+
+@interface {{ prefix }}{{ module_info.name }}ViewController : UIViewController <{{ prefix }}{{ module_info.name }}ViewInput>
+
+@property (strong, nonatomic) id<{{ prefix }}{{ module_info.name }}ViewOutput> output;
+
+@end

@@ -1,0 +1,15 @@
+{% include 'header' %}
+
+#import <Typhoon/Typhoon.h>
+
+@protocol {{ prefix }}{{ module_info.name }}ModuleOutput;
+
+/**
+ {{ module_info.description }}
+ */
+@interface {{ prefix }}{{ module_info.name }}Assembly : TyphoonAssembly
+
+- (UIViewController *)view{{ module_info.name }}Module;
+- (void)setModuleOutput:(id<{{ prefix }}{{ module_info.name }}ModuleOutput>)moduleOutput;
+
+@end

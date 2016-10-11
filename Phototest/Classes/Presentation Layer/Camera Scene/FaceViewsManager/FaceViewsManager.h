@@ -6,13 +6,14 @@
 //  Copyright © 2016 Pavlo Muratov. All rights reserved.
 //
 
-#import <CoreImage/CoreImage.h>
-
 #import "FaceValidation.h"
+
+@class AVMetadataFaceObject;
 
 @interface FaceViewsManager : NSObject
 
 - (instancetype)initWithFacesParentView:(UIView *)parentView facesValidator:(id<FaceValidation>)validator;
-- (void)showFaceViewsWithFaces:(NSArray<CIFaceFeature *> *)faces animated:(BOOL)animated;
+- (void)showFaceViewsForFaces:(NSArray<AVMetadataFaceObject *> *)faces;
 
 @end
+

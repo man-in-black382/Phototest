@@ -13,16 +13,14 @@
 #import "UploadStatusView.h"
 
 #import "AVCapturePipeline.h"
-#import "FaceDetector.h"
 #import "FaceViewsManager.h"
 #import "FaceValidator.h"
-#import "InMemoryStorage.h"
 #import "NetworkFacade.h"
 
 #import "UIColor+AppColors.h"
 #import "UIImage+Size.h"
 
-@interface CameraViewController () <AVCapturePipelineDelegate, FaceDetectorDelegate>
+@interface CameraViewController () <AVCapturePipelineDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *cameraPreviewView;
 @property (weak, nonatomic) IBOutlet UIView *deniedVideoPermisisonsView;
@@ -31,7 +29,6 @@
 @property (weak, nonatomic) IBOutlet UserInteractionMenu *userInteractionMenu;
 
 @property (strong, nonatomic) AVCapturePipeline *capturePipeline;
-@property (strong, nonatomic) FaceDetector *faceDetector;
 @property (strong, nonatomic) FaceViewsManager *faceViewsManager;
 @property (strong, nonatomic) FaceValidator *facesValidator;
 
@@ -68,15 +65,6 @@
 
 #pragma mark - Accessors, Lazy init
 
-- (FaceDetector *)faceDetector
-{
-    if (!_faceDetector) {
-        _faceDetector = [[FaceDetector alloc] initWithMinimumUpdateInterval:0.1f];
-        _faceDetector.delegate = self;
-    }
-    return _faceDetector;
-}
-
 - (FaceViewsManager *)faceViewsManager
 {
     if (!_faceViewsManager) {
@@ -103,7 +91,7 @@
 - (IBAction)capturePressed:(id)sender
 {
     self.capturePipeline.paused = YES;
-    [self.faceViewsManager showFaceViewsWithFaces:nil animated:NO];
+    [self.faceViewsManager showFaceViewsForFaces:nil];
     [self.capturePipeline captureStillImage];
 }
 
@@ -113,19 +101,7 @@
     [self.uploadStatusView uploadStarted];
     self.capturePipeline.paused = NO;
     
-    __weak typeof(self) weakSelf = self;
-    self.uploadOperation = [NetworkFacade uploadImage:self.capturedImage
-                                       withIdentifier:[InMemoryStorage storage].applicationIdentifier
-                                          withSuccess:^{
-                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                  [weakSelf.uploadStatusView uploadCompleted];
-                                                  weakSelf.uploadOperation = nil;
-                                              });
-                                          } orFailure:^(NSUInteger statusCode) {
-                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                  [weakSelf.uploadStatusView uploadFailed];
-                                              });
-                                          }];
+#warning IMPLEMETNT LATER
 }
 
 - (IBAction)discardImagePressed:(id)sender
@@ -147,20 +123,18 @@
     [self.uploadStatusView uploadCancelled];
 }
 
-#pragma mark - FaceDetectorDelegate
-
-- (void)faceDetector:(id<FaceDetection>)detector didDetectFaces:(NSArray<CIFaceFeature *> *)faces
-{
-    [self.faceViewsManager showFaceViewsWithFaces:!self.uploadOperation ? faces : nil animated:YES];
-    self.userInteractionMenu.userInteractionEnabled = [self.facesValidator areFacesValid:faces] && !self.uploadOperation;
-}
-
 #pragma mark - AVCapturePipelineDelegate
 
 - (void)capturePipeline:(AVCapturePipeline *)pipeline capturedStillImage:(UIImage *)image
 {
     self.capturedImage = [image webSuitedImage];
     [self.userInteractionMenu showDialog];
+}
+
+- (void)capturePipeline:(AVCapturePipeline *)pipeline didRecognizeFaces:(NSArray<AVMetadataFaceObject *> *)faces
+{
+    [self.faceViewsManager showFaceViewsForFaces:!self.uploadOperation ? faces : nil];
+    self.userInteractionMenu.userInteractionEnabled = [self.facesValidator areFacesValid:faces] && !self.uploadOperation;
 }
 
 #pragma mark - Private
@@ -189,7 +163,6 @@
     self.capturePipeline.delegate = self;
     [self.cameraPreviewView.layer addSublayer:self.capturePipeline.videoCapturePreviewLayer];
     self.capturePipeline.videoCapturePreviewLayer.frame = self.cameraPreviewView.layer.bounds;
-    self.capturePipeline.faceDetector = self.faceDetector;
 }
 
 #pragma mark - Notifications

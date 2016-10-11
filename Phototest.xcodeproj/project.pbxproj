@@ -15,12 +15,10 @@
 		3E4C3E3B1D33AB2700B0DC3F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E4C3E331D33AB2700B0DC3F /* Main.storyboard */; };
 		3E4C3E3C1D33AB2700B0DC3F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E4C3E361D33AB2700B0DC3F /* Info.plist */; };
 		3E4C3E3D1D33AB2700B0DC3F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4C3E371D33AB2700B0DC3F /* main.m */; };
-		3E4C3E421D33ACF900B0DC3F /* FaceDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4C3E411D33ACF900B0DC3F /* FaceDetector.m */; };
 		3E4C3E461D33ADE200B0DC3F /* AVCapturePipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4C3E451D33ADE200B0DC3F /* AVCapturePipeline.m */; };
 		3E4C3E4C1D33AEC300B0DC3F /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4C3E4B1D33AEC300B0DC3F /* CameraViewController.m */; };
 		3E4C3E501D33AEF700B0DC3F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4C3E4F1D33AEF700B0DC3F /* AppDelegate.m */; };
 		3E4C3E541D33BBEE00B0DC3F /* FaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4C3E531D33BBEE00B0DC3F /* FaceView.m */; };
-		3E9CCCD11D37C72D00962CC4 /* ImageUploadRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9CCCD01D37C72D00962CC4 /* ImageUploadRequest.m */; };
 		3E9CCCD51D37D9AF00962CC4 /* UIImage+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9CCCD41D37D9AF00962CC4 /* UIImage+Size.m */; };
 		3EA176F71D365694008DCC37 /* DialogButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA176F61D365694008DCC37 /* DialogButton.m */; };
 		3EA176FB1D3658B2008DCC37 /* NegativeDialogButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA176FA1D3658B2008DCC37 /* NegativeDialogButton.m */; };
@@ -33,7 +31,6 @@
 		3EA1771D1D367A32008DCC37 /* InMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA1771C1D367A32008DCC37 /* InMemoryStorage.m */; };
 		3ED206D51D342C1D0034F870 /* RectCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED206D41D342C1D0034F870 /* RectCalculator.m */; };
 		3EE48A491D34D8770073CEE9 /* FaceViewsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE48A481D34D8770073CEE9 /* FaceViewsManager.m */; };
-		3EE48A4D1D34EADA0073CEE9 /* CIFeature+ConvertedBounds.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE48A4C1D34EADA0073CEE9 /* CIFeature+ConvertedBounds.m */; };
 		3EE48A521D3503180073CEE9 /* FaceValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE48A511D3503180073CEE9 /* FaceValidator.m */; };
 		3EEFF7551D35186600BA9407 /* UserInteractionMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EEFF7541D35186600BA9407 /* UserInteractionMenu.m */; };
 		61A20CC4E8AD2B2FAAE37F93 /* libPods-Phototest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F8E56C64BBA80179DE606D1 /* libPods-Phototest.a */; };
@@ -53,8 +50,6 @@
 		3E4C3E341D33AB2700B0DC3F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3E4C3E361D33AB2700B0DC3F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E4C3E371D33AB2700B0DC3F /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		3E4C3E401D33ACF900B0DC3F /* FaceDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FaceDetector.h; path = "Business Logic/FaceDetector/FaceDetector.h"; sourceTree = "<group>"; };
-		3E4C3E411D33ACF900B0DC3F /* FaceDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FaceDetector.m; path = "Business Logic/FaceDetector/FaceDetector.m"; sourceTree = "<group>"; };
 		3E4C3E441D33ADE200B0DC3F /* AVCapturePipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCapturePipeline.h; sourceTree = "<group>"; };
 		3E4C3E451D33ADE200B0DC3F /* AVCapturePipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCapturePipeline.m; sourceTree = "<group>"; };
 		3E4C3E4A1D33AEC300B0DC3F /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraViewController.h; path = "Presentation Layer/Camera Scene/CameraViewController/CameraViewController.h"; sourceTree = "<group>"; };
@@ -63,8 +58,6 @@
 		3E4C3E4F1D33AEF700B0DC3F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3E4C3E521D33BBEE00B0DC3F /* FaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FaceView.h; path = "Presentation Layer/Camera Scene/FaceView/FaceView.h"; sourceTree = "<group>"; };
 		3E4C3E531D33BBEE00B0DC3F /* FaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FaceView.m; path = "Presentation Layer/Camera Scene/FaceView/FaceView.m"; sourceTree = "<group>"; };
-		3E9CCCCF1D37C72D00962CC4 /* ImageUploadRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUploadRequest.h; sourceTree = "<group>"; };
-		3E9CCCD01D37C72D00962CC4 /* ImageUploadRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageUploadRequest.m; sourceTree = "<group>"; };
 		3E9CCCD31D37D9AF00962CC4 /* UIImage+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Size.h"; sourceTree = "<group>"; };
 		3E9CCCD41D37D9AF00962CC4 /* UIImage+Size.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Size.m"; sourceTree = "<group>"; };
 		3EA176F51D365694008DCC37 /* DialogButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DialogButton.h; path = "Presentation Layer/Camera Scene/DialogButton/DialogButton.h"; sourceTree = "<group>"; };
@@ -90,11 +83,8 @@
 		3ED206D41D342C1D0034F870 /* RectCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RectCalculator.m; path = "Business Logic/RectCalculator/RectCalculator.m"; sourceTree = "<group>"; };
 		3EE48A471D34D8770073CEE9 /* FaceViewsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FaceViewsManager.h; path = "Presentation Layer/Camera Scene/FaceViewsManager/FaceViewsManager.h"; sourceTree = "<group>"; };
 		3EE48A481D34D8770073CEE9 /* FaceViewsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FaceViewsManager.m; path = "Presentation Layer/Camera Scene/FaceViewsManager/FaceViewsManager.m"; sourceTree = "<group>"; };
-		3EE48A4B1D34EADA0073CEE9 /* CIFeature+ConvertedBounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CIFeature+ConvertedBounds.h"; path = "Categories/CIFeature+ConvertedBounds/CIFeature+ConvertedBounds.h"; sourceTree = "<group>"; };
-		3EE48A4C1D34EADA0073CEE9 /* CIFeature+ConvertedBounds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CIFeature+ConvertedBounds.m"; path = "Categories/CIFeature+ConvertedBounds/CIFeature+ConvertedBounds.m"; sourceTree = "<group>"; };
 		3EE48A501D3503180073CEE9 /* FaceValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FaceValidator.h; path = "Business Logic/FacesValidator/FaceValidator.h"; sourceTree = "<group>"; };
 		3EE48A511D3503180073CEE9 /* FaceValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FaceValidator.m; path = "Business Logic/FacesValidator/FaceValidator.m"; sourceTree = "<group>"; };
-		3EE48A541D35112F0073CEE9 /* FaceDetection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FaceDetection.h; path = "Business Logic/FaceDetector/FaceDetection.h"; sourceTree = "<group>"; };
 		3EEFF7531D35186600BA9407 /* UserInteractionMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInteractionMenu.h; path = "Presentation Layer/Camera Scene/UserInteractionMenu/UserInteractionMenu.h"; sourceTree = "<group>"; };
 		3EEFF7541D35186600BA9407 /* UserInteractionMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInteractionMenu.m; path = "Presentation Layer/Camera Scene/UserInteractionMenu/UserInteractionMenu.m"; sourceTree = "<group>"; };
 		52EBE9F69F95D32D281187C0 /* Pods-Phototest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Phototest.release.xcconfig"; path = "Pods/Target Support Files/Pods-Phototest/Pods-Phototest.release.xcconfig"; sourceTree = "<group>"; };
@@ -213,22 +203,11 @@
 		3E4C3E3E1D33ACC300B0DC3F /* Business Logic */ = {
 			isa = PBXGroup;
 			children = (
-				3E4C3E3F1D33ACDE00B0DC3F /* FaceDetector */,
 				3EE48A4F1D35027C0073CEE9 /* FacesValidator */,
 				3ED206D21D342C080034F870 /* RectCalculator */,
 				3E4C3E431D33ADE200B0DC3F /* AVCapturePipeline */,
 			);
 			name = "Business Logic";
-			sourceTree = "<group>";
-		};
-		3E4C3E3F1D33ACDE00B0DC3F /* FaceDetector */ = {
-			isa = PBXGroup;
-			children = (
-				3EE48A541D35112F0073CEE9 /* FaceDetection.h */,
-				3E4C3E401D33ACF900B0DC3F /* FaceDetector.h */,
-				3E4C3E411D33ACF900B0DC3F /* FaceDetector.m */,
-			);
-			name = FaceDetector;
 			sourceTree = "<group>";
 		};
 		3E4C3E431D33ADE200B0DC3F /* AVCapturePipeline */ = {
@@ -288,15 +267,6 @@
 				3E4C3E531D33BBEE00B0DC3F /* FaceView.m */,
 			);
 			name = FaceView;
-			sourceTree = "<group>";
-		};
-		3E9CCCCE1D37C72D00962CC4 /* ImageUploadRequest */ = {
-			isa = PBXGroup;
-			children = (
-				3E9CCCCF1D37C72D00962CC4 /* ImageUploadRequest.h */,
-				3E9CCCD01D37C72D00962CC4 /* ImageUploadRequest.m */,
-			);
-			path = ImageUploadRequest;
 			sourceTree = "<group>";
 		};
 		3E9CCCD21D37D9AF00962CC4 /* UIImage+Size */ = {
@@ -393,7 +363,6 @@
 		3EA1770B1D36758B008DCC37 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
-				3E9CCCCE1D37C72D00962CC4 /* ImageUploadRequest */,
 			);
 			name = Requests;
 			path = "Data Layer/Networking/Requests";
@@ -451,18 +420,8 @@
 			children = (
 				3E9CCCD21D37D9AF00962CC4 /* UIImage+Size */,
 				3E2B38E41D35445A00BC3066 /* UIColor+AppColors */,
-				3EE48A4E1D34EADD0073CEE9 /* CIFeature+ConvertedBounds */,
 			);
 			name = Categories;
-			sourceTree = "<group>";
-		};
-		3EE48A4E1D34EADD0073CEE9 /* CIFeature+ConvertedBounds */ = {
-			isa = PBXGroup;
-			children = (
-				3EE48A4B1D34EADA0073CEE9 /* CIFeature+ConvertedBounds.h */,
-				3EE48A4C1D34EADA0073CEE9 /* CIFeature+ConvertedBounds.m */,
-			);
-			name = "CIFeature+ConvertedBounds";
 			sourceTree = "<group>";
 		};
 		3EE48A4F1D35027C0073CEE9 /* FacesValidator */ = {
@@ -616,12 +575,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E9CCCD11D37C72D00962CC4 /* ImageUploadRequest.m in Sources */,
 				3EA176FF1D3658C9008DCC37 /* PositiveDialogButton.m in Sources */,
 				3E4C3E4C1D33AEC300B0DC3F /* CameraViewController.m in Sources */,
 				3EA177111D36758B008DCC37 /* NetworkRequest.m in Sources */,
-				3EE48A4D1D34EADA0073CEE9 /* CIFeature+ConvertedBounds.m in Sources */,
-				3E4C3E421D33ACF900B0DC3F /* FaceDetector.m in Sources */,
 				3E2B38E71D35448000BC3066 /* UIColor+AppColors.m in Sources */,
 				3EA177161D36763A008DCC37 /* ReachabilityManager.m in Sources */,
 				3EE48A521D3503180073CEE9 /* FaceValidator.m in Sources */,

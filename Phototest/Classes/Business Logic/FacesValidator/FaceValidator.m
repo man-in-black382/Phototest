@@ -8,8 +8,7 @@
 
 #import "FaceValidator.h"
 #import "RectCalculator.h"
-
-#import "CIFeature+ConvertedBounds.h"
+#import <AVFoundation/AVMetadataObject.h>
 
 static CGFloat const MinimumValidFaceToCaptureSurfaceRatio = 0.37f;
 
@@ -44,17 +43,17 @@ static CGFloat const MinimumValidFaceToCaptureSurfaceRatio = 0.37f;
 
 #pragma mark - FacesValidation
 
-- (BOOL)areFacesValid:(NSArray<CIFaceFeature *> *)faces
+- (BOOL)areFacesValid:(NSArray<AVMetadataFaceObject *> *)faces
 {
     if (faces.count != 1) {
         return NO;
     }
     
-    CIFaceFeature *face = faces.firstObject;
+    AVMetadataFaceObject *face = faces.firstObject;
     CGFloat captureSurfaceArea = [RectCalculator rectArea:self.facesWorkingSurface];
-    CGFloat faceArea = [RectCalculator rectArea:face.UIKitOrientedBounds];
+    CGFloat faceArea = [RectCalculator rectArea:face.bounds];
     CGFloat faceAreaPortion = faceArea / captureSurfaceArea;
-
+    
     if (faceAreaPortion < MinimumValidFaceToCaptureSurfaceRatio) {
         return NO;
     }

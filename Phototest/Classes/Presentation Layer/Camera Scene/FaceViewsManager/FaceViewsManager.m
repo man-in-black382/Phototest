@@ -10,8 +10,8 @@
 #import "RectCalculator.h"
 
 #import "FaceView.h"
+#import <AVFoundation/AVMetadataObject.h>
 
-#import "CIFeature+ConvertedBounds.h"
 #import "UIColor+AppColors.h"
 
 @interface FaceViewsManager ()
@@ -31,7 +31,7 @@
     self = [super init];
     if (self) {
         [NSException raise:NSInternalInconsistencyException
-                    format:@"You must specify parent view using %@ initializer", NSStringFromSelector(@selector(initWithFacesParentView:facesValidator:))];
+                    format:@"You must specify parent view through %@ initializer", NSStringFromSelector(@selector(initWithFacesParentView:facesValidator:))];
     }
     return self;
 }
@@ -49,10 +49,11 @@
 
 #pragma mark - Private
 
-- (void)readjustFacesArrayWithFaces:(NSArray<CIFaceFeature *> *)faces
+- (void)readjustFacesArrayWithFaces:(NSArray<AVMetadataFaceObject *> *)faces
 {
     CGColorRef faceRectsColor = [self.facesValidator areFacesValid:faces] ? [UIColor applicationGreenColor].CGColor : [UIColor redColor].CGColor;
-    NSMutableArray<NSValue *> *rects = [NSMutableArray arrayWithArray:[faces valueForKeyPath:@"UIKitOrientedBounds"]];
+    
+    NSMutableArray<NSValue *> *rects = [NSMutableArray arrayWithArray:[faces valueForKeyPath:@"bounds"]];
     
     NSInteger sizeDifference = faces.count - self.faceViews.count;
     if (sizeDifference > 0) {
@@ -64,7 +65,7 @@
     }
 }
 
-- (void)handleNegativeSizeDifferenceForFaces:(NSArray<CIFaceFeature *> *)faces rects:(NSMutableArray<NSValue *> *)rects rectsColor:(CGColorRef)color
+- (void)handleNegativeSizeDifferenceForFaces:(NSArray<AVMetadataFaceObject *> *)faces rects:(NSMutableArray<NSValue *> *)rects rectsColor:(CGColorRef)color
 {
     NSUInteger i;
     // Readjust existing views
@@ -73,19 +74,19 @@
         faceView.layer.borderColor = color;
         CGRect nearestRect = [RectCalculator nearestRectFromArray:rects forRect:faceView.frame];
         [rects removeObject:[NSValue valueWithCGRect:nearestRect]];
-        faceView.frame = nearestRect;
-        faceView.hidden = NO;
+        [self showFaceView:faceView withNewFrame:nearestRect];
     }
     // Add new (missing) views
     for (NSUInteger j = i; j < faces.count; j++) {
-        FaceView *newFace = [[FaceView alloc] initWithFrame:faces[i].UIKitOrientedBounds];
+        FaceView *newFace = [FaceView new];
         newFace.layer.borderColor = color;
         [self.faceViews addObject:newFace];
         [self.facesParentView addSubview:newFace];
+        [self showFaceView:newFace withNewFrame:faces[i].bounds];
     }
 }
 
-- (void)handlePositiveSizeDifferenceForFaces:(NSArray<CIFaceFeature *> *)faces rects:(NSMutableArray<NSValue *> *)rects rectsColor:(CGColorRef)color
+- (void)handlePositiveSizeDifferenceForFaces:(NSArray<AVMetadataFaceObject *> *)faces rects:(NSMutableArray<NSValue *> *)rects rectsColor:(CGColorRef)color
 {
     NSUInteger i;
     // Readjust existing views
@@ -94,19 +95,17 @@
         faceView.layer.borderColor = color;
         CGRect nearestRect = [RectCalculator nearestRectFromArray:rects forRect:faceView.frame];
         [rects removeObject:[NSValue valueWithCGRect:nearestRect]];
-        faceView.frame = nearestRect;
-        faceView.hidden = NO;
+        [self showFaceView:faceView withNewFrame:nearestRect];
     }
     // Hide unnecessary views
     for (NSUInteger j = i; j < self.faceViews.count; j++) {
         FaceView *faceView = self.faceViews[j];
-        faceView.hidden = YES;
-        faceView.center = self.facesParentView.center;
+        [self hideFaceViewAnimated:faceView];
         faceView.layer.borderColor = [UIColor clearColor].CGColor;
     }
 }
 
-- (void)handleAbsentSizeDifferenceForFaces:(NSArray<CIFaceFeature *> *)faces rects:(NSMutableArray<NSValue *> *)rects rectsColor:(CGColorRef)color
+- (void)handleAbsentSizeDifferenceForFaces:(NSArray<AVMetadataFaceObject *> *)faces rects:(NSMutableArray<NSValue *> *)rects rectsColor:(CGColorRef)color
 {
     // Readjust all existing views
     for (NSUInteger i = 0; i < self.faceViews.count; i++) {
@@ -114,25 +113,44 @@
         faceView.layer.borderColor = color;
         CGRect nearestRect = [RectCalculator nearestRectFromArray:rects forRect:faceView.frame];
         [rects removeObject:[NSValue valueWithCGRect:nearestRect]];
-        faceView.frame = nearestRect;
-        faceView.hidden = NO;
+        [self showFaceView:faceView withNewFrame:nearestRect];
     }
+}
+
+- (void)showFaceView:(FaceView *)faceView withNewFrame:(CGRect)newFrame
+{
+    CGFloat diagonal = [RectCalculator diagonalOfRect:newFrame];
+    CGFloat travelDistance = [RectCalculator distanceFromPoint:faceView.center toPoint:[RectCalculator centerForRect:newFrame]];
+    
+    // Prevent views from traveling too far. If the traveling distance is greater than the new frame's diagonal, only smoothly reappear view on the new position
+    if (travelDistance > diagonal) {
+        faceView.alpha = 0.0;
+        faceView.frame = newFrame;
+        [UIView animateWithDuration:0.2 animations:^{
+            faceView.alpha = 1.0;
+        }];
+    } else { // Otherwise, show a full traveling animation, like in the native camera app
+        [UIView animateWithDuration:0.2
+                              delay:0.0
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             faceView.frame = newFrame;
+                         } completion:nil];
+    }
+}
+
+- (void)hideFaceViewAnimated:(FaceView *)faceView
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        faceView.alpha = 0.0;
+    }];
 }
 
 #pragma mark - Public
 
-- (void)showFaceViewsWithFaces:(NSArray<CIFaceFeature *> *)faces animated:(BOOL)animated
+- (void)showFaceViewsForFaces:(NSArray<AVMetadataFaceObject *> *)faces
 {
-    if (animated) {
-        [UIView animateWithDuration:0.2f
-                              delay:0.f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                             [self readjustFacesArrayWithFaces:faces];
-                         } completion:nil];
-    } else {
-        [self readjustFacesArrayWithFaces:faces];
-    }
+    [self readjustFacesArrayWithFaces:faces];
 }
 
 @end

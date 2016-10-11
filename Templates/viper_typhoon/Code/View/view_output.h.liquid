@@ -1,0 +1,12 @@
+{% include 'header' %}
+
+#import <Foundation/Foundation.h>
+
+@protocol {{ prefix }}{{ module_info.name }}ViewOutput <NSObject>
+
+/**
+ Method notifies presenter that view has been prepared for work
+ */
+- (void)didTriggerViewReadyEvent;
+
+@end

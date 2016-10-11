@@ -1,0 +1,28 @@
+{% include 'header' %}
+
+#import "{{ prefix }}{{ module_info.name }}Presenter.h"
+
+#import "{{ prefix }}{{ module_info.name }}ViewInput.h"
+#import "{{ prefix }}{{ module_info.name }}InteractorInput.h"
+#import "{{ prefix }}{{ module_info.name }}RouterInput.h"
+#import "{{ prefix }}{{ module_info.name }}ModuleOutput.h"
+
+@implementation {{ prefix }}{{ module_info.name }}Presenter
+
+#pragma mark - {{ prefix }}{{ module_info.name }}ModuleInput
+
+- (void)configureModule
+{
+    // Module's default configuration, doesn't depend on view's state
+}
+
+#pragma mark - {{ prefix }}{{ module_info.name }}ViewOutput
+
+- (void)didTriggerViewReadyEvent
+{
+	[self.view setupInitialState];
+}
+
+#pragma mark - {{ prefix }}{{ module_info.name }}InteractorOutput
+
+@end

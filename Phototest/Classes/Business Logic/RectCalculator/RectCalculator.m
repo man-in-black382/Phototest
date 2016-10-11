@@ -26,6 +26,8 @@
     return 1 / [self scaleToAspectFitRect:rtarget inRect:rfit];
 }
 
+#pragma mark - Public
+
 + (CGPoint)centerForRect:(CGRect)rect
 {
     return CGPointMake((CGRectGetMinX(rect) + CGRectGetMaxX(rect)) / 2.f,
@@ -39,7 +41,10 @@
     return sqrt(xDifference * xDifference + yDifference * yDifference);
 }
 
-#pragma mark - Public
++ (CGFloat)diagonalOfRect:(CGRect)rect
+{
+    return [self distanceFromPoint:rect.origin toPoint:CGPointMake(rect.origin.x + CGRectGetWidth(rect), rect.origin.y + CGRectGetHeight(rect))];
+}
 
 + (CGRect)aspectFitRect:(CGRect)rfit inRect:(CGRect)rtarget
 {

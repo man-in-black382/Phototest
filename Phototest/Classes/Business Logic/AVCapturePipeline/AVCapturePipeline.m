@@ -10,12 +10,11 @@
 
 #import <ImageIO/ImageIO.h>
 
-#import "FaceDetector.h"
 #import "RectCalculator.h"
 
 static CGFloat const MaxZoomFactor = 8.f;
 
-@interface AVCapturePipeline () <AVCaptureVideoDataOutputSampleBufferDelegate>
+@interface AVCapturePipeline () <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate>
 
 // Session
 @property (strong, nonatomic) AVCaptureSession *session;
@@ -28,10 +27,11 @@ static CGFloat const MaxZoomFactor = 8.f;
 
 // Device outputs
 @property (strong, nonatomic) AVCaptureStillImageOutput *stillImageOutput;
-@property (strong, nonatomic) AVCaptureVideoDataOutput *videoDataOutput;
+@property (strong, nonatomic) AVCaptureMetadataOutput *metadataOutput;
 
 // Queues
-@property (strong, nonatomic) dispatch_queue_t callbackQueue;
+@property (strong, nonatomic) dispatch_queue_t sampleBuffersDispatchQueue;
+@property (strong, nonatomic) dispatch_queue_t metadataOutputQueue;
 
 @property (assign, nonatomic, getter = isRecordingAllowed) BOOL recordingAllowed;
 
@@ -47,7 +47,8 @@ static CGFloat const MaxZoomFactor = 8.f;
 {
     self = [super init];
     if (self) {
-        _callbackQueue = dispatch_queue_create("com.capt.videocapture.callback.queue", DISPATCH_QUEUE_SERIAL);
+        _sampleBuffersDispatchQueue = dispatch_queue_create("com.capt.videocapture.samle.buffers.queue", DISPATCH_QUEUE_SERIAL);
+        _metadataOutputQueue = dispatch_queue_create("com.capt.videocapture.metadata.queue", DISPATCH_QUEUE_SERIAL);
         
         [self setupSession];
         
@@ -57,7 +58,6 @@ static CGFloat const MaxZoomFactor = 8.f;
         [self setupVideoCapturePreviewLayer];
         
         self.captureSessionPreset = AVCaptureSessionPresetPhoto;
-        self.videoOrientation = AVCaptureVideoOrientationPortrait;
         
         [_session startRunning];
     }
@@ -108,14 +108,6 @@ static CGFloat const MaxZoomFactor = 8.f;
     }
     
     [self.backCamera unlockForConfiguration];
-}
-
-- (void)setVideoOrientation:(AVCaptureVideoOrientation)videoOrientation
-{
-    _videoOrientation = videoOrientation;
-    
-    AVCaptureConnection *videoConnection = [self.videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
-    videoConnection.videoOrientation = videoOrientation;
 }
 
 - (void)setPaused:(BOOL)paused
@@ -170,21 +162,22 @@ static CGFloat const MaxZoomFactor = 8.f;
 
 - (void)setupDataOutputs
 {
-    self.videoDataOutput = [AVCaptureVideoDataOutput new];
-    [self.videoDataOutput setSampleBufferDelegate:self queue:self.callbackQueue];
-    
     self.stillImageOutput = [AVCaptureStillImageOutput new];
     
-    if ([self.session canAddOutput:self.videoDataOutput]) {
-        [self.session addOutput:self.videoDataOutput];
-    } else {
-        NSLog(@"Cannot add Video Data Output to session");
-    }
+    self.metadataOutput = [AVCaptureMetadataOutput new];
+    [self.metadataOutput setMetadataObjectsDelegate:self queue:self.metadataOutputQueue];
     
     if ([self.session canAddOutput:self.stillImageOutput]) {
         [self.session addOutput:self.stillImageOutput];
     } else {
         NSLog(@"Cannot add Still Image Data Output to session");
+    }
+    
+    if ([self.session canAddOutput:self.metadataOutput]) {
+        [self.session addOutput:self.metadataOutput];
+        self.metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeFace];
+    } else {
+        NSLog(@"Cannot add Metadata Output to session");
     }
 }
 
@@ -194,40 +187,27 @@ static CGFloat const MaxZoomFactor = 8.f;
     self.videoCapturePreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect;
 }
 
-#pragma mark - AVCaptureVideo(Audio)DataOutputSampleBufferDelegate
+#pragma mark - AVCaptureMetadataOutputObjectsDelegate
 
-- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
     if (self.paused) {
         return;
     }
     
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer];
+    NSMutableArray *transformedFaces = [NSMutableArray array];
+    for (AVMetadataFaceObject *face in metadataObjects) {
+        [transformedFaces addObject:[self.videoCapturePreviewLayer transformedMetadataObjectForMetadataObject:face]];
+    }
     
-    CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
-    CGRect cleanAperture = CMVideoFormatDescriptionGetCleanAperture(formatDescription, true);
-    _videoBox = [self videoPreviewBoxForPreviewLayer:self.videoCapturePreviewLayer cleanAperture:cleanAperture];
-
-    [self.faceDetector detectFacesInImage:ciImage videoBox:_videoBox];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.delegate respondsToSelector:@selector(capturePipeline:didRecognizeFaces:)]) {
+            [self.delegate capturePipeline:self didRecognizeFaces:transformedFaces];
+        }
+    });
 }
 
 #pragma mark - Utility methods
-
-- (CGRect)videoPreviewBoxForPreviewLayer:(AVCaptureVideoPreviewLayer *)previewLayer cleanAperture:(CGRect)cleanAperture
-{
-    CGRect videoBox = CGRectZero;
-    
-    if ([previewLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) {
-        videoBox = [RectCalculator aspectFitRect:cleanAperture aroundRect:previewLayer.bounds];
-    } else if ([previewLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
-        videoBox = [RectCalculator aspectFitRect:cleanAperture inRect:previewLayer.bounds];
-    } else if ([previewLayer.videoGravity isEqualToString:AVLayerVideoGravityResize]) {
-        videoBox = previewLayer.bounds;
-    }
-    
-    return videoBox;
-}
 
 - (AVCaptureDevice *)cameraWithDevicePosition:(AVCaptureDevicePosition)devicePosition
 {
@@ -286,7 +266,7 @@ static CGFloat const MaxZoomFactor = 8.f;
             self.backCamera.exposureMode = AVCaptureExposureModeContinuousAutoExposure;
         }
     }
-
+    
     [self.backCamera unlockForConfiguration];
 }
 

@@ -10,7 +10,4 @@
 
 @interface NetworkFacade : NSObject
 
-+ (NetworkOperation *)uploadImage:(UIImage *)image withIdentifier:(NSString *)identifier
-                          withSuccess:(void(^)())successBlock orFailure:(void(^)(NSUInteger statusCode))failureBlock;
-
 @end
