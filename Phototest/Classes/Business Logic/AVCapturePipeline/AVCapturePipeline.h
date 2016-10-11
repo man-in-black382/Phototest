@@ -7,7 +7,6 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
-
 #import "FaceDetection.h"
 
 @class AVCapturePipeline;

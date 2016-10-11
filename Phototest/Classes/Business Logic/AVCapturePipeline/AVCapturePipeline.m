@@ -244,6 +244,11 @@ static CGFloat const MaxZoomFactor = 8.f;
 
 - (AVCaptureVideoOrientation)videoOrientationFromDeviceOrientation:(UIDeviceOrientation)deviceOrientation
 {
+    // IMPORTANT: returning AVCaptureVideoOrientationLandscapeRight for UIDeviceOrientationLandscapeLeft and vise versa,
+    // because AVCaptureVideoOrientations are following the UIInterfaceOrientation convention, not the UIDeviceOrientation one
+    // (UIDeviceOrientationLandscapeLeft == UIInterfaceOrientationLandscapeRight for some reason)
+    // See http://stackoverflow.com/a/9491477 for discussion
+    
     switch (deviceOrientation) {
         case UIDeviceOrientationPortrait: {
             return AVCaptureVideoOrientationPortrait;
@@ -302,7 +307,7 @@ static CGFloat const MaxZoomFactor = 8.f;
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:connection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
         UIImage *image = [UIImage imageWithData:imageData];
-
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([weakSelf.delegate respondsToSelector:@selector(capturePipeline:capturedStillImage:)]) {
                 [weakSelf.delegate capturePipeline:weakSelf capturedStillImage:image];

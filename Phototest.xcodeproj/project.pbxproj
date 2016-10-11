@@ -526,6 +526,8 @@
 				TargetAttributes = {
 					3E4C3E111D33A8FA00B0DC3F = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 8VCNABVV4B;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -753,12 +755,18 @@
 			baseConfigurationReference = 9C39AE6E80F48CBF1A0F0290 /* Pods-Phototest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sergey Kharitich (7M7AR342RZ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 8VCNABVV4B;
 				GCC_PREFIX_HEADER = Phototest/SupportingFiles/PrefixHeader.pch;
 				INFOPLIST_FILE = Phototest/SupportingFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.home.work.Phototest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -767,12 +775,18 @@
 			baseConfigurationReference = 52EBE9F69F95D32D281187C0 /* Pods-Phototest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: PRIVATBANK, Commercial Bank Public Joint Stock Company";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 8VCNABVV4B;
 				GCC_PREFIX_HEADER = Phototest/SupportingFiles/PrefixHeader.pch;
 				INFOPLIST_FILE = Phototest/SupportingFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.home.work.Phototest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
